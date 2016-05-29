@@ -1,0 +1,144 @@
+<%= render partial: 'up_navbar' %>
+<section id="content">
+    <div class="container">
+        <div class="block-header">
+            <h1><%= @one_board.name %> <span style="font-size:16px; vertical-align: text-top; margin:-10px 0px 0px 15px;">__ <%= @one_board.category.name %></span></h1>
+        </div>
+    
+        <div class="card">
+            <div class="listview lv-bordered lv-lg">
+                <div class="lv-header-alt clearfix">
+                    <h2 class="lvh-label hidden-xs">멋사인들을 위한 '<%= @one_board.name %>' 채널 입니다. 이 곳에는 이 채널의 한 줄 설명이 들어갑니다.</h2>
+                    
+                    <div class="lvh-search">
+                        <input type="text" placeholder="Start typing..." class="lvhs-input">
+    
+                        <i class="lvh-search-close">×</i>
+                    </div>
+                    
+                    <ul class="lv-actions actions">
+                        <li>
+                            <a href="" class="lvh-search-trigger">
+                                <i class="zmdi zmdi-search"></i>
+                            </a>
+                        </li>
+        
+                        <li>
+                            <a href="">
+                                <i class="zmdi zmdi-time"></i>
+                            </a>
+                        </li>
+                        <li class="dropdown">
+                            <a href="" data-toggle="dropdown" aria-expanded="true">
+                                <i class="zmdi zmdi-sort"></i>
+                            </a>
+                
+                            <ul class="dropdown-menu dropdown-menu-right">
+                                <li>
+                                    <a href="">Last Modified</a>
+                                </li>
+                                <li>
+                                    <a href="">Last Edited</a>
+                                </li>
+                                <li>
+                                    <a href="">Name</a>
+                                </li>
+                                <li>
+                                    <a href="">Date</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="">
+                                <i class="zmdi zmdi-info"></i>
+                            </a>
+                        </li>
+                        <li class="dropdown">
+                            <a href="" data-toggle="dropdown" aria-expanded="true">
+                                <i class="zmdi zmdi-more-vert"></i>
+                            </a>
+                
+                            <ul class="dropdown-menu dropdown-menu-right">
+                                <li>
+                                    <a href="">Refresh</a>
+                                </li>
+                                <li>
+                                    <a href="">Listview Settings</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="lv-body">
+                    <% @one_board.postings.reverse.each do |po| %>
+                        <div class="lv-item media">
+                            <div class="checkbox pull-left">
+                                <label>
+                                    <input type="checkbox" value="">
+                                    <i class="input-helper"></i>
+                                </label>
+                            </div>
+                            <div class="pull-left">
+                                <img class="lv-img-sm" src="<%= po.user.profile_img unless po.user_id == nil %><%= "http://ecx.images-amazon.com/images/I/41qnJTOX81L._SY300_.jpg" unless po.user_id != nil %>" alt="">
+                            </div>
+                            <div class="media-body">
+                                <div class="lv-title" style="font-size:15px;"><%= po.title %></div>
+                                <small class="lv-small"><%= po.content.first(20) %></small>
+                                
+                                <ul class="lv-attrs">
+                                    <% date = Date.parse(po.created_at.to_s).to_s %>
+                                    <% year = date.first(4) + "년" %>
+                                    <% month = date.first(7).last(2) + "월" %>
+                                    <% day = date.last(2) + "일" %>
+                                    <li>작성일: <%= year %>/<%= month %>/<%= day %></li>
+                                    <li>조회수: <%= (1111..9999).to_a.sample %></li>
+                                    <li>댓글:
+                                        <% if po.replies.count == 0 %>
+                                            No
+                                        <% else %>
+                                            <%= po.replies.count %>
+                                        <% end %>
+                                    </li>
+                                </ul>
+                                
+                                <div class="lv-actions actions dropdown">
+                                    <a href="" data-toggle="dropdown" aria-expanded="true">
+                                        <i class="zmdi zmdi-more-vert"></i>
+                                    </a>
+                        
+                                    <ul class="dropdown-menu dropdown-menu-right">
+                                        <li>
+                                            <a href="">Edit</a>
+                                        </li>
+                                        <li>
+                                            <a href="">Delete</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    <% end %>
+                </div>
+            </div>
+            
+            <ul class="pagination lv-pagination">
+                <li>
+                    <a href="" aria-label="Previous">
+                        <i class="zmdi zmdi-chevron-left"></i>
+                    </a>
+                </li>
+                <li class="active"><a href="">1</a></li>
+                <li><a href="">2</a></li>
+                <li><a href="">3</a></li>
+                <li><a href="">4</a></li>
+                <li><a href="">5</a></li>
+                <li>
+                    <a href="" aria-label="Next">
+                        <i class="zmdi zmdi-chevron-right"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</section>

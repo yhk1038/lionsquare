@@ -1,0 +1,76 @@
+<div class="row">
+  <div class="col-md-4"></div>
+  <div class="col-md-4">
+    <center>
+      <h2>LionSquare에 오신 것을 환영합니다!</h2>
+      
+      <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+        <%= devise_error_messages! %>
+      
+        <div class="field">
+          <%= f.label :name, '본명을 등록세요' %><br />
+          <%= f.text_field :name, autofocus: true %>
+        </div>
+        
+        <div class="field">
+          <%= f.label :school_id, '학교를 알려주세요!' %><br />
+          <select name="user[school_id]" id="user_school_id">
+            <% School.all.each do |school| %>
+            <option value="<%= school.id %>"><%= school.name %></option>
+            <% end %>
+          </select>
+        </div>
+        
+        <div class="field">
+          <%= f.label :address, '어디 사세요?' %><br />
+          <%= f.text_field :address, autofocus: true %>
+        </div>
+        
+        <div class="field">
+          <%= f.label :phone, '번호좀..' %><br />
+          <%= f.text_field :phone, autofocus: true, value: "010-1234-5678" %>
+        </div>
+        
+        <!--<div class="field">-->
+          <%#= f.label :profile_img, '프사등록해염' %>
+          <%= f.hidden_field :profile_img, value: "http://ecx.images-amazon.com/images/I/41qnJTOX81L._SY300_.jpg" %>
+        <!--</div>-->
+        
+        <!--<div class="field">-->
+          <%#= f.label :follower, '님 좋대여' %>
+          <%= f.hidden_field :follower, value: 0 %>
+        <!--</div>-->
+        
+        <!--<div class="field">-->
+          <%#= f.label :level, '님 권한임' %>
+          <%= f.hidden_field :level, value: 1 %>
+        <!--</div>-->
+        
+        <div class="field">
+          <%= f.label :email, '메일쓰셈!!!!!!' %><br />
+          <%= f.email_field :email, autofocus: true %>
+        </div>
+        
+        <div class="field">
+          <%= f.label :password, '비번ㄱ' %>
+          <% if @minimum_password_length %>
+          <em>(<%= @minimum_password_length %> 자 이상은 돼야지)</em>
+          <% end %><br />
+          <%= f.password_field :password, autocomplete: "off" %>
+        </div>
+      
+        <div class="field">
+          <%= f.label :password_confirmation, '비번 한번 더ㄱ' %><br />
+          <%= f.password_field :password_confirmation, autocomplete: "off" %>
+        </div>
+      
+        <div class="actions">
+          <%= f.submit "Sign up" %>
+        </div>
+      <% end %>
+      
+      <%= render "devise/shared/links" %>
+    </center>
+  </div>
+  <div class="col-md-4"></div>
+</div>

@@ -1,0 +1,99 @@
+<%= render partial: 'up_navbar' %>
+
+<div class="container" style="margin-top:10px;">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header" style="background: rgba(0, 161, 255, 0.2) !important;">
+                <div class="media">
+                    <div class="pull-left">
+                        <img class="lv-img" src="<%= @posting.user.profile_img unless @posting.user_id == nil %><%= "http://ecx.images-amazon.com/images/I/41qnJTOX81L._SY300_.jpg" unless @posting.user_id != nil %>" alt="">
+                    </div>
+                    
+                    <div class="media-body m-t-5">
+                        <% date = Date.parse(@posting.created_at.to_s).to_s %>
+                        <% year = date.first(4) %>
+                        <% month = date.first(7).last(2) %>
+                        <% day = date.last(2) %>
+                        <h2><%= @posting.title %> <small><%= year %>년 <%= month %>월 <%= day %>일 <%= @posting.created_at.to_s.last(12).first(5) %> 에 작성됨</small></h2>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card-body card-padding">
+                <pre style="background:none; border:none; font-size:14px; font-familly:inherit;"><%= @posting.content %></pre>
+                
+                <div class="wall-img-preview lightbox clearfix">
+                    <div class="wip-item" data-src="/mtl/img/rehoboth_hackaton.png" style="background-image: url(/mtl/img/rehoboth_hackaton.png); background-size: auto 100%;">
+                        <div class="lightbox-item"></div>
+                    </div>
+                </div>
+                
+                <ul class="wall-attrs clearfix list-inline list-unstyled">
+                    <li class="wa-stats">
+                        <span><i class="zmdi zmdi-comments"></i> <%= @posting.replies.count %></span>
+                        <span class="active"><i class="zmdi zmdi-favorite"></i> 220</span>
+                    </li>
+                    
+                    <li class="wa-users">
+                        <a href=""><img src="img/profile-pics/1.jpg" alt=""></a>
+                        <a href=""><img src="img/profile-pics/2.jpg" alt=""></a>
+                        <a href=""><img src="img/profile-pics/3.jpg" alt=""></a>
+                        <a href=""><img src="img/profile-pics/5.jpg" alt=""></a>
+                    </li>
+                </ul>    
+            </div>
+            
+            <div class="wall-comment-list">
+                
+                <!-- Comment Listing -->
+                <div class="wcl-list">
+                    <% @posting.replies.each do |r| %>
+                        <div class="media">
+                            <a href="" class="pull-left">
+                                <img src="<%= r.user.profile_img if r.user_id != nil %>" alt="" class="lv-img-sm">
+                            </a>
+                            
+                            <div class="pull-right p-0">
+                                <ul class="actions">
+                                    <li class="dropdown" dropdown="">
+                                        <a href="" dropdown-toggle="" aria-haspopup="true" aria-expanded="false">
+                                            <i class="zmdi zmdi-more-vert"></i>
+                                        </a>
+                                        
+                                        <ul class="dropdown-menu dropdown-menu-right">
+                                            <li>
+                                                <a href="">Report</a>
+                                            </li>
+                                            <li>
+                                                <a href="">Delete</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                            <%
+                                since_min = r.created_at.to_s.last(12).first(2).to_i
+                                now_min = Time.now.to_s.last(12).first(2).to_i
+                                
+                                ttt = now_min - since_min
+                            %>
+                            <div class="media-body">
+                                <a href="" class="a-title" style="color:#000 !important;"><%= r.user.name if r.user_id != nil %></a> <small class="c-gray m-l-10"><%= ttt %> 분 전...</small>
+                                <p class="m-t-5 m-b-0"><%= r.content %></p>
+                            </div>
+                        </div>
+                    <% end %>
+                </div>
+                
+                <!-- Comment form -->
+                <div class="wcl-form">
+                    <div class="wc-comment">
+                        <div class="wcc-inner wcc-toggle" style="">
+                            <input type="text" name="content" placeholder="Write Something..." style="width:100%; height:100%; border:none;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

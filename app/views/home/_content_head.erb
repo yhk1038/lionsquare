@@ -1,0 +1,267 @@
+<div class="container">
+	<div class="row" style="height:288px;">
+		<% if user_signed_in? %>
+			<div class="card profile-view col-md-3" style="padding:0; margin:0;">
+                <div id="photo_box" class="pv-header">
+                    <img id="account_photo" src="<%= current_user.profile_img %>" class="pv-main" alt="">
+                </div>
+                
+                <div class="pv-body" style="padding: 0 20px 13px;">
+                    <h2 style="margin-bottom: 7px;"><b><%= current_user.name %></b></h2>
+                    <div id="account_detail" style="display:none;">
+                        <!--<small>봉사활동을 끝내고 코딩봉사를 하러 해커톤에 와서 휴지 앞치마를 시전하심</small><br>-->
+                        <br>
+                        <span style="margin-bottom:5px;"><small><%= School.find(current_user.school_id).name %></small></span>
+                        <ul class="pv-contact" style="margin-top:10px;">
+                            <li><i class="zmdi zmdi-pin"></i> <%= current_user.address %></li>
+                            <li><i class="zmdi zmdi-phone"></i> <%= current_user.phone %></li>
+                        </ul>
+                        <ul class="pv-follow">
+                            <li>589 Followers</li>
+                            <li>8545 Followings</li>
+                        </ul>
+                    </div>
+                    <div id="mod_account" style="padding:0">
+                        <a id="mod_account1" class="btn btn-info waves-effect" >내 정보 더 보기</a>
+                        <a href="/users/sign_out" class="btn btn-warning waves-effect" >로그아웃</a>
+                    </div>
+                    <div id="mod_account2" style="display:none; padding:0">
+                        <a class="btn btn-warning waves-effect" style="width:49%">저장</a>
+                        <a id="mod_account3" class="btn btn-info waves-effect" style="width:49%">취소</a>
+                    </div>
+                    <script>
+                        $("#mod_account1").click(function(){
+                            $("#photo_box").hide("fast");
+                            $("#mod_account").hide("fast");
+                            $("#account_detail").show("fast");
+                            $("#mod_account2").show("fast");
+                        });
+                        $("#mod_account3").click(function(){
+                            $("#account_detail").hide("fast");
+                            $("#mod_account2").hide("fast");
+                            $("#photo_box").show("fast");
+                            $("#mod_account").show("fast");
+                        });
+                    </script>
+                </div>
+            </div>
+		<% else %>
+			<div class="card col-md-3" style="padding:0; margin:0;">
+			    <div class="card-header ch-alt">
+			        <h2>로그인 <small>클래스라이언 계정이다! 로그인해 시끼야!!</small></h2>
+			    </div>
+			    
+			    <div class="card-body card-padding">
+			        <form action="<%= user_session_path %>" method="POST">
+    			    	<!--<div class="form-group fg-float">-->
+    			        <!--    <div class="fg-line">-->
+    			        <!--        <textarea class="form-control auto-size input-sm" data-autosize-on="true" style="overflow: hidden; word-wrap: break-word; height: 43px;"></textarea>-->
+    			        <!--        <label class="fg-label">Message</label>-->
+    			        <!--    </div>-->
+    			        <!--</div>-->
+        		        <div class="form-group fg-float m-b-30">
+                            <div class="fg-line">
+                                <input type="email"  name="user[email]" class="form-control input-sm" placeholder="" id="user_email">
+                                <label class="fg-label">메일을 입력하세요.</label>
+                            </div>
+                        </div>
+    			        <div class="form-group fg-float m-b-30">
+    			            <div class="fg-line">
+    			                <input type="password" name="user[password]" class="form-control input-sm" placeholder="" id="user_password">
+    			                <label class="fg-label">비밀 번호를 입력하세요.</label>
+    			            </div>
+    			        </div>
+    			        <button type="submit" class="btn btn-info waves-effect">로그인</button>
+    			        <a href="/users/sign_up" class="btn btn-warning waves-effect">회원가입</a>
+    			    </form>
+			    </div>
+			</div>
+		<% end %>
+		<style>
+            .carousel-fade .carousel-inner .item {
+              -webkit-transition-property: opacity;
+              transition-property: opacity;
+            }
+            .carousel-fade .carousel-inner .item,
+            .carousel-fade .carousel-inner .active.left,
+            .carousel-fade .carousel-inner .active.right {
+              opacity: 0;
+            }
+            .carousel-fade .carousel-inner .active,
+            .carousel-fade .carousel-inner .next.left,
+            .carousel-fade .carousel-inner .prev.right {
+              opacity: 1;
+            }
+            .carousel-fade .carousel-inner .next,
+            .carousel-fade .carousel-inner .prev,
+            .carousel-fade .carousel-inner .active.left,
+            .carousel-fade .carousel-inner .active.right {
+              left: 0;
+              -webkit-transform: translate3d(0, 0, 0);
+                      transform: translate3d(0, 0, 0);
+            }
+            .carousel-fade .carousel-control {
+              z-index: 2;
+            }
+        </style>
+		<div class="card col-md-6" style="height:100%;padding: 0;margin: 0; background:none; border:none;">
+		    <div style="width:100%; height:100%; margin: 0 1.5%; padding: 0 15px 0 0;">
+		        <div id="carousel-example-generic" class="carousel slide carousel-fade" data-ride="carousel" style="height:100%;">
+                  <!-- Wrapper for slides -->
+                  <div class="carousel-inner" role="listbox" style="height:100%;">
+                    <div class="item active">
+                      <img src="/mtl/img/rehoboth_hackaton.png">
+                    </div>
+                    <div class="item">
+                      <img src="/mtl/img/rehoboth_hackaton2.jpg" alt="...">
+                    </div>
+                    <div class="item">
+                      <img src="/mtl/img/rehoboth_hackaton3.jpg" alt="...">
+                    </div>
+                    <div class="item">
+                      <img src="/mtl/img/rehoboth_hackaton4.jpg" alt="...">
+                    </div>
+                    <div class="item">
+                      <img src="/mtl/img/rehoboth_hackaton5.jpg" alt="...">
+                    </div>
+                    <div class="item">
+                      <img src="/mtl/img/rehoboth_hackaton6.jpg" alt="...">
+                    </div>
+                  </div>
+                
+                  <!-- Controls -->
+                  <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+                    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                  </a>
+                  <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+                    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                  </a>
+                </div>
+			    
+			</div>
+		</div>
+		<!--<div class="card col-md-3" style="background:rgba(174, 174, 174, 0.3); height:100%;">-->
+			
+		<!--</div>-->
+		
+		<div class="card rating-list col-md-3" style="margin: 0;">
+            <div class="listview">
+                <div class="lv-header">
+                    <div class="m-t-5">
+                        Average Rating 3.0
+                    </div>
+                    
+                    <div class="clearfix"></div>
+                    
+                    <div class="rl-star">
+                        <i class="zmdi zmdi-star active"></i>
+                        <i class="zmdi zmdi-star active"></i>
+                        <i class="zmdi zmdi-star active"></i>
+                        <i class="zmdi zmdi-star"></i>
+                        <i class="zmdi zmdi-star"></i>
+                    </div>
+                    
+                </div>
+                
+                <style>
+                	.padding-fix{
+                		padding: 4.7px 20px !important;
+                	}
+                </style>
+                
+                <div class="lv-body">
+                    <div class="p-15">
+                        <div class="lv-item padding-fix">
+                            <div class="media">
+                                <div class="pull-left">
+                                    1 <i class="zmdi zmdi-star"></i>
+                                </div>
+                                
+                                <div class="pull-right">20</div>
+                                
+                                <div class="media-body">
+                                    <div class="progress">
+                                        <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 20%">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="lv-item padding-fix">
+                            <div class="media">
+                                <div class="pull-left">
+                                    2 <i class="zmdi zmdi-star"></i>
+                                </div>
+                                
+                                <div class="pull-right">45</div>
+                                
+                                <div class="media-body">
+                                    <div class="progress">
+                                        <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 45%">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="lv-item padding-fix">
+                            <div class="media">
+                                <div class="pull-left">
+                                    3 <i class="zmdi zmdi-star"></i>
+                                </div>
+                                
+                                <div class="pull-right">60</div>
+                                
+                                <div class="media-body">
+                                    <div class="progress">
+                                        <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        
+                        
+                        <div class="lv-item padding-fix">
+                            <div class="media">
+                                <div class="pull-left">
+                                    4 <i class="zmdi zmdi-star"></i>
+                                </div>
+                                
+                                <div class="pull-right">78</div>
+                                
+                                <div class="media-body">
+                                    <div class="progress">
+                                        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="78" aria-valuemin="0" aria-valuemax="100" style="width: 78%">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="lv-item padding-fix">
+                            <div class="media">
+                                <div class="pull-left">
+                                    5 <i class="zmdi zmdi-star"></i>
+                                </div>
+                                
+                                <div class="pull-right">22</div>
+                                
+                                <div class="media-body">
+                                    <div class="progress">
+                                        <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="22" aria-valuemin="0" aria-valuemax="100" style="width: 22%">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+	</div>
+</div>

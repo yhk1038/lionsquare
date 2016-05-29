@@ -1,0 +1,73 @@
+<div class="container">
+
+    <form style="margin_top:30px" action ="/home/write" method="POST" >
+        <div class="form-group">
+            <label for="exampleInputPassword1">글쓰기</label>
+            <input type="text" name="title" class="form-control" id="exampleInputPassword1" placeholder="글 제목을 입력하세요.">
+        </div>
+        <textarea class="form-control" rows="5" id="content" name="content" placeholder="글 내용을 입력하세요."></textarea></hr>
+        <button type = "submit" class = "btn btn-primary btn-lg btn-block">글 작성하기</button>
+    </form>		
+
+
+    <% @postings.each do |p| %>
+        <div class ="well">
+            <%=p.id%><br>
+            <%=p.title%><br>
+            <%=p.created_at%><br>
+            <%=p.content%><br>
+            <% if user_signed_in? && current_user.id == p.user_id %>
+                <a href="/destroy/<%=p.id%>">삭제</a>
+            <% end %>    
+            
+            <div class="reply_content">                                                                                                                       
+                <% p.replies.each do |r| %>
+                    <p><%= r.content %></p>
+                    <p><%= r.user_id %></p>
+                    <% if user_signed_in? && current_user.id == r.user_id %>
+                        <a href="/reply_destroy/<%=r.id%>">삭제</a>  
+                    <% end %>
+                <% end %>
+            </div>
+        
+            <textarea class="form-control" rows="5" id="content_<%=p.id%>" name="content"> </textarea>
+            <button value ="<%=p.id%>" type="submit" class="btn btn-default reply_submit">Submit</button>
+        </div>        
+    <% end %>	
+</div>
+
+
+
+<script>
+//reply_submit 이란 놈이 클릭이되면 아래의 코드를 실행한다.
+$(".reply_submit").click(function(){
+    
+    post_id = this.value;
+    post_content = $("#content_" + post_id).val();
+    
+    $.ajax({
+      method: "POST",
+      url: "/home/reply_write",
+      //url: "/home/reply_write",//되네?????
+      //url:"/reply_write",
+      data: { content: post_content, id: post_id },
+    
+  
+                success: function()
+                {
+                  $( ".reply_content" ).append(post_content);
+                  alert("리플이 작성되었습니다.")
+                
+                },
+                error: function()
+                {
+                
+                  alert("리플이 작성되지 않았습니다.");
+                }
+          
+        });
+      
+});
+ 
+</script>
+

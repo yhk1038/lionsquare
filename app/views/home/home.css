@@ -1,0 +1,17 @@
+.navbar_color{
+    background-image:none;
+    background-color:#00A1FF !important;
+    border:none;
+}
+a {
+    color: #fff !important;
+}
+html body{
+    background: #f1f1f2 !important;
+}
+.register_form {
+  display: none;
+}
+.login_form{
+    display: block;
+}

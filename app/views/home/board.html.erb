@@ -1,0 +1,221 @@
+<%= render partial: 'up_navbar' %>
+    <section id="content">
+        <div class="container">
+            <div class="block-header">
+                <h1><%= @one_board.name %>
+                    <span class="board_belongs">__<%= @one_board.category.name %></span>
+                    <% if params[:admin] == '10' %>
+                        <form action="/home/edit/<%= @one_board.id %>?for=name" method="POST">
+                           <input type="text" name="name" class="form-control input-sm mod_board_title_input" value="<%= @one_board.name %>" id="<%= @one_board.id %>">
+                           <span class="board_belongs_caption">◀</span>
+                           <select name="category_id" class="form-control input-sm mod_board_title_input" style="width: 15%; margin: 0 1%;">
+                                <% Category.all.each do |ct| %>
+                                    <option value="<%= ct.id %>" <%= "selected" if ct.id == @one_board.category_id %>><%= ct.name %></option>
+                                <% end %>
+                            </select>
+                           <button type="submit" class="btn btn-info waves-effect">게시판 이름 및 소속 변경</button>
+                        </form>
+                    <% else %>
+                        <% if user_signed_in? %>
+                            <% if current_user.level == 10%>
+                                <a href="/home/write" class="btn btn-info waves-effect admin_btn">새 글쓰기</a>
+                                <a href="/home/board/<%= @one_board.id %>?admin=10" class="btn btn-warning waves-effect admin_btn">게시판관리</a>
+                                <a href="/home/board?admin=1<%= current_user.level %>" class="btn btn-warning waves-effect admin_btn">새 게시판</a>
+                            <% else %>
+                                <a href="/home/write" class="btn btn-info waves-effect admin_btn">새 글쓰기</a>
+                            <% end %> 
+                        <% end %>
+                    <% end %>
+                </h1>
+            </div>
+        
+            <div class="card">
+                <div class="listview lv-bordered lv-lg">
+                    <div class="lv-header-alt clearfix" style="background: #FFEB3B !important;">
+                        <h2 class="lvh-label hidden-xs" style="width:70%;">
+                            <% unless params[:admin] == '10' %>
+                                <span style="color:#818181;"><%= @one_board.description %></span>
+                            <% else %>
+                                <form action="/home/edit/<%= @one_board.id %>?for=description" method="POST">
+                                   <input type="text" name="description" class="form-control input-sm mod_board_detail_input" value="<%= @one_board.description %>" id="<%= @one_board.id %>">
+                                   <button type="submit" class="btn btn-info waves-effect">한 줄 소개 변경</button>
+                                </form>
+                            <% end %>
+                        </h2>
+                        <div class="action_wrapper"></div>
+                        <div class="lvh-search">
+                            <input type="text" placeholder="Start typing..." class="lvhs-input">
+        
+                            <i class="lvh-search-close">×</i>
+                        </div>
+                        
+                        <ul class="lv-actions actions">
+                            <li>
+                                <a href="" class="lvh-search-trigger">
+                                    <i class="zmdi zmdi-search"></i>
+                                </a>
+                            </li>
+            
+                            <li>
+                                <a href="">
+                                    <i class="zmdi zmdi-time"></i>
+                                </a>
+                            </li>
+                            <li class="dropdown">
+                                <a href="" data-toggle="dropdown" aria-expanded="true">
+                                    <i class="zmdi zmdi-sort"></i>
+                                </a>
+                    
+                                <ul class="dropdown-menu dropdown-menu-right">
+                                    <li>
+                                        <a href="">Last Modified</a>
+                                    </li>
+                                    <li>
+                                        <a href="">Last Edited</a>
+                                    </li>
+                                    <li>
+                                        <a href="">Name</a>
+                                    </li>
+                                    <li>
+                                        <a href="">Date</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="">
+                                    <i class="zmdi zmdi-info"></i>
+                                </a>
+                            </li>
+                            <li class="dropdown">
+                                <a href="" data-toggle="dropdown" aria-expanded="true">
+                                    <i class="zmdi zmdi-more-vert"></i>
+                                </a>
+                    
+                                <ul class="dropdown-menu dropdown-menu-right">
+                                    <li>
+                                        <a href="">Refresh</a>
+                                    </li>
+                                    <li>
+                                        <a href="">Listview Settings</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="lv-body">
+                        <% @one_board.postings.reverse.each do |po| %>
+                            <div class="lv-item media">
+                                <div class="checkbox pull-left">
+                                    <label>
+                                        <input type="checkbox" value="">
+                                        <i class="input-helper"></i>
+                                    </label>
+                                </div>
+                                <div class="pull-left">
+                                    <img class="lv-img-sm" src="<%= po.user.profile_img unless po.user_id == nil %><%= "http://ecx.images-amazon.com/images/I/41qnJTOX81L._SY300_.jpg" unless po.user_id != nil %>" alt="">
+                                </div>
+                                <a href="/home/posting/<%= po.id %>">
+                                    <div class="media-body">
+                                        <div class="lv-title" style="font-size:15px;"><%= po.title %></div>
+                                        <small class="lv-small"><%= po.content.first(20) %></small>
+                                        
+                                        <ul class="lv-attrs">
+                                            <% date = Date.parse(po.created_at.to_s).to_s %>
+                                            <% year = date.first(4) + "년" %>
+                                            <% month = date.first(7).last(2) + "월" %>
+                                            <% day = date.last(2) + "일" %>
+                                            <li>작성일: <%= year %>/<%= month %>/<%= day %></li>
+                                            <li>조회수: <%= (1111..9999).to_a.sample %></li>
+                                            <li>댓글:
+                                                <% if po.replies.count == 0 %>
+                                                    No
+                                                <% else %>
+                                                    <%= po.replies.count %>
+                                                <% end %>
+                                            </li>
+                                        </ul>
+                                        
+                                        <div class="lv-actions actions dropdown">
+                                            <a href="" data-toggle="dropdown" aria-expanded="true">
+                                                <i class="zmdi zmdi-more-vert"></i>
+                                            </a>
+                                
+                                            <ul class="dropdown-menu dropdown-menu-right">
+                                                <li>
+                                                    <a href="">Edit</a>
+                                                </li>
+                                                <li>
+                                                    <a href="">Delete</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        <% end %>
+                    </div>
+                </div>
+                
+                <ul class="pagination lv-pagination">
+                    <li>
+                        <a href="" aria-label="Previous">
+                            <i class="zmdi zmdi-chevron-left"></i>
+                        </a>
+                    </li>
+                    <li class="active"><a href="">1</a></li>
+                    <li><a href="">2</a></li>
+                    <li><a href="">3</a></li>
+                    <li><a href="">4</a></li>
+                    <li><a href="">5</a></li>
+                    <li>
+                        <a href="" aria-label="Next">
+                            <i class="zmdi zmdi-chevron-right"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    <a href="/home" class = "btn btn-primary btn-lg waves-effect">글 작성하기</button>
+</div>
+
+<script>
+    jQuery(document).ready(function($) {
+      $(".clickable-row").click(function() {
+        window.document.location = $(this).data("href");
+      });
+    });
+</script>
+
+<style>
+    .board_belongs{
+        font-size:16px; 
+        vertical-align: text-top; 
+        margin:-10px 0px 0px 15px;
+    }
+    .board_belongs_caption{
+        font-size:17px; 
+        margin:4px 0px 0px 10px;
+        float:left;
+    }
+    .admin_btn{
+        float: right;
+        right: 0;
+        bottom: 0;
+        margin: 5px;
+    }
+    .mod_board_title_input{
+        width: 30%;
+        float: left;
+    }
+    .mod_board_detail_input{
+        width: 75%;
+        float:left;
+    }
+    .action_wrapper{
+        width:10.5%;
+        height:30px;
+        float:left;
+    }
+</style>
